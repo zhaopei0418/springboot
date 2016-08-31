@@ -1,0 +1,19 @@
+/bin/
+*.DS_Store
+/build
+/target
+/.gradle
+/.gradle*
+/out
+/.idea
+#/.settings
+/work
+WebContent/.idea/
+*.log
+*.log.*
+
+*.class
+
+# Package Files #
+*.war
+*.ear

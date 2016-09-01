@@ -10,6 +10,7 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -38,32 +39,20 @@ public class DatabaseConfiguration {
 	}
 
 	@Bean
-	public DataSource druidDataSource(@Value("${spring.datasource.driver-class-name}") String driver,
-			@Value("${spring.datasource.url}") String url, @Value("${spring.datasource.username}") String username,
-			@Value("${spring.datasource.password}") String password) {
-		DruidDataSource druidDataSource = new DruidDataSource();
-		druidDataSource.setDriverClassName(driver);
-		druidDataSource.setUrl(url);
-		druidDataSource.setUsername(username);
-		druidDataSource.setPassword(password);
-		try {
-			druidDataSource.setFilters("stat, wall, log4j");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return druidDataSource;
+	@ConfigurationProperties(prefix = "spring.datasource.primary")
+	public DataSource druidDataSource() {
+		return new DruidDataSource();
 	}
 	
 	@Bean
-	@Resource(name = "druidDataSource")
-	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+	public SqlSessionFactory sqlSessionFactory() throws Exception {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-		sqlSessionFactoryBean.setDataSource(dataSource);
+		sqlSessionFactoryBean.setDataSource(this.druidDataSource());
 		PageHelper pageHelper = new PageHelper();
 		Properties properties = new Properties();
 		properties.setProperty("dialect", "mysql");
 		properties.setProperty("pageSizeZero", "true");
-		properties.setProperty("reasonable", "true");
+		properties.setProperty("reasonable", "false");
 		properties.setProperty("params", "pageNum=pageHelperStart;pageSize=pageHelperRows;");
 		properties.setProperty("supportMethodsArguments", "true");
 		properties.setProperty("returnPageInfo", "none");
@@ -74,9 +63,8 @@ public class DatabaseConfiguration {
 	}
 
 	@Bean
-	@Resource(name = "druidDataSource")
-	public PlatformTransactionManager transactionManager(DataSource dataSource) {
-		return new DataSourceTransactionManager(dataSource);
+	public PlatformTransactionManager transactionManager() {
+		return new DataSourceTransactionManager(this.druidDataSource());
 	}
 	
 	@Bean

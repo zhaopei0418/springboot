@@ -20,7 +20,7 @@ public class CityController {
 	
 	@RequestMapping("/city/getCity")
 	public List<City> getCity() {
-		PageHelper.startPage(2, 3);
+		PageHelper.startPage(3, 3);
 		return this.cityService.findByState("CA");
 	}
 }

@@ -2,21 +2,25 @@ package online.zhaopei.myproject.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageHelper;
+
 import online.zhaopei.myproject.domain.City;
-import online.zhaopei.myproject.mapper.CityMapper;
+import online.zhaopei.myproject.service.CityService;
 
 @RestController
 public class CityController {
 
-	@Autowired
-	private CityMapper cityMapper;
+	@Resource
+	private CityService cityService;
 	
 	@RequestMapping("/city/getCity")
-	public City getCity() {
-		return this.cityMapper.findByState("CA");
+	public List<City> getCity() {
+		PageHelper.startPage(2, 3);
+		return this.cityService.findByState("CA");
 	}
 }

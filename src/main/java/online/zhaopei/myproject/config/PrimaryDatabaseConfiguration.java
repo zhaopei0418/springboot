@@ -1,22 +1,23 @@
 package online.zhaopei.myproject.config;
 
-import java.sql.SQLException;
 import java.util.Properties;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.log4j.Logger;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.beans.factory.annotation.Value;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
@@ -24,8 +25,12 @@ import com.alibaba.druid.support.http.WebStatFilter;
 import com.github.pagehelper.PageHelper;
 
 @Configuration
-public class DatabaseConfiguration {
+@EnableTransactionManagement
+@MapperScan(basePackages = "online.zhaopei.myproject.mapper.primary", sqlSessionFactoryRef = "primarySqlSessionFactory")
+public class PrimaryDatabaseConfiguration {
 
+	private static Logger logger = Logger.getLogger(PrimaryDatabaseConfiguration.class);
+	
 	@Bean
 	public ServletRegistrationBean druidServlet() {
 		ServletRegistrationBean reg = new ServletRegistrationBean();
@@ -38,16 +43,19 @@ public class DatabaseConfiguration {
 		return reg;
 	}
 
-	@Bean
+	@Primary
+	@Bean(name = "primaryDataSource")
 	@ConfigurationProperties(prefix = "spring.datasource.primary")
-	public DataSource druidDataSource() {
+	public DataSource primeryDataSource() {
 		return new DruidDataSource();
 	}
-	
-	@Bean
-	public SqlSessionFactory sqlSessionFactory() throws Exception {
+
+	@Primary
+	@Bean(name = "primarySqlSessionFactory")
+	public SqlSessionFactory primarySqlSessionFactory() throws Exception {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-		sqlSessionFactoryBean.setDataSource(this.druidDataSource());
+		logger.info("primary sqlsession--" + this.primeryDataSource().hashCode());
+		sqlSessionFactoryBean.setDataSource(this.primeryDataSource());
 		PageHelper pageHelper = new PageHelper();
 		Properties properties = new Properties();
 		properties.setProperty("dialect", "mysql");
@@ -62,11 +70,12 @@ public class DatabaseConfiguration {
 		return sqlSessionFactoryBean.getObject();
 	}
 
-	@Bean
-	public PlatformTransactionManager transactionManager() {
-		return new DataSourceTransactionManager(this.druidDataSource());
+	@Bean(name = "primaryTxMan")
+	public PlatformTransactionManager primaryTransactionManager() {
+		logger.info("primary dataSource--" + this.primeryDataSource().hashCode());
+		return new DataSourceTransactionManager(this.primeryDataSource());
 	}
-	
+
 	@Bean
 	public FilterRegistrationBean filterRegistrationBean() {
 		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();

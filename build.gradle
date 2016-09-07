@@ -16,7 +16,11 @@ repositories {
 }
 
 dependencies {
-	compile("org.springframework.boot:spring-boot-starter-web")
-	compile("org.springframework.boot:spring-boot-devtools")
+	compile "org.springframework.boot:spring-boot-starter-web"
+	compile "org.springframework.boot:spring-boot-devtools"
+	compile 'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1'
+	compile 'mysql:mysql-connector-java'
+	compile 'com.alibaba:druid:1.0.25'
+	compile 'com.github.pagehelper:pagehelper:4.1.6'
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 }

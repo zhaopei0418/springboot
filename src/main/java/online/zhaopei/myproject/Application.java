@@ -2,24 +2,18 @@ package online.zhaopei.myproject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class Application {
+public class Application extends SpringBootServletInitializer {
 
-//	public Application() {
-//		this.register(Endpoint.class);
-//		this.register(UserEndpoint.class);
-//	}
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(Application.class);
+	}
 	
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);
 	}
-
-//	@Bean
-//	public ServletRegistrationBean jerseyServlet() {
-//		ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/jersey");
-//		registration.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, Application.class.getName());
-//		return registration;
-//	}
-
 }

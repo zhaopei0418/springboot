@@ -20,6 +20,12 @@ spring:
     minIdle: 5
     maxActive: 20
     filters: stat,wall,log4j
+  rabbitmq:
+    host: www.haeport.com
+    virtualHost: ase
+    port: 5672
+    username: username
+    password: password
 
 logging:
   file: springboot.log
@@ -27,6 +33,6 @@ logging:
     org:
       mybatis: TRACE
       springframework: INFO
-    online.zhaopei.myproject: TRACE
-    online.zhaopei.myproject.service: TRACE
-    online.zhaopei.myproject.mapper: TRACE
+    online:
+      zhaopei:
+        mypoject: TRACE

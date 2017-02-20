@@ -12,3 +12,14 @@
 ```
 
 启动之后输入localhost:8081  返回home 就成功了
+
+## 注意如出现以下错误:
+```
+org.springframework.amqp.AmqpAuthenticationException: com.rabbitmq.client.AuthenticationFailureException: ACCESS_REFUSED - Login was refused using authentication mechanism PLAIN. For details see the broker logfile.
+```
+请修改src/main/resources/application.yml中的
+```
+rabbitmq:
+  username: 自己队列的用户名
+  password: 自己队列的密码
+```

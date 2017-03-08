@@ -14,7 +14,11 @@ public class Receiver {
 		System.out.println("receiver:" + hello);
 	}
 	
-	@RabbitListener(queues = "hello")
+	/**
+	 * 注释掉不监听rabbit队列
+	 * @param city
+	 */
+//	@RabbitListener(queues = "hello")
 	public void process(City city) {
 		System.out.println("city.name===[" + city.getCountry() + "]");
 		System.out.println(new Gson().toJson(city));

@@ -25,7 +25,8 @@ public class UserController {
 		city.setName("name-city");
 		city.setState("sss");
 		city.setCountry("country===");
-		this.sender.send(city);
+		//注释掉不再发送，自行开启
+//		this.sender.send(city); 
 		
 		return "home";
 	}

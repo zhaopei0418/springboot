@@ -12,6 +12,7 @@ WebContent/.idea/
 *.log
 *.log.*
 *.swp
+*.iml
 
 *.class
 /.settings

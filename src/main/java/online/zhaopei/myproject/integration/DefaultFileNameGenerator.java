@@ -32,7 +32,7 @@ public class DefaultFileNameGenerator implements FileNameGenerator {
     @Override
     public String generateFileName(Message<?> message) {
         if (this.headerId) {
-            return this.prefix + message.getHeaders().getId() + this.suffix;
+            return this.prefix + TIME_FORMAT.format(Calendar.getInstance().getTime()) + "_" + message.getHeaders().getId() + this.suffix;
         }
         return this.prefix + TIME_FORMAT.format(Calendar.getInstance().getTime()) + this.suffix;
     }

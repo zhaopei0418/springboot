@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:integration="http://www.springframework.org/schema/integration"
+       xmlns:int-redis="http://www.springframework.org/schema/integration/redis"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/mvc
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd
+            http://www.springframework.org/schema/integration/redis
+            http://www.springframework.org/schema/integration/redis/spring-integration-redis-5.1.xsd
+            http://www.springframework.org/schema/integration
+            http://www.springframework.org/schema/integration/spring-integration-5.1.xsd
+            ">
+
+    <!--<integration:channel id="redisSendChannel" />-->
+
+    <!--<integration:channel id="redisReceiveChannel" />-->
+
+    <!--<int-redis:publish-subscribe-channel id="redisReceiveChannel" topic-name="redisTest"/>-->
+
+    <!--<int-redis:publish-subscribe-channel id="redisSendChannel" topic-name="redisTest"/>-->
+
+    <int-redis:inbound-channel-adapter id="redisInboudAdapter" channel="redisReceiveChannel" topics="redisTest"/>
+
+    <int-redis:outbound-channel-adapter id="redisOutboundAdapter" channel="redisSendChannel" topic="redisTest" />
+
+    <!--<bean id="stringRedisSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer" />-->
+
+    <!--<int-redis:queue-inbound-channel-adapter queue="redisTest" channel="redisReceiveChannel" serializer="stringRedisSerializer"-->
+                                             <!--right-pop="true"/>-->
+
+    <!--<int-redis:queue-outbound-channel-adapter queue="redisTest" channel="redisSendChannel" serializer="stringRedisSerializer"-->
+                                              <!--left-push="true"/>-->
+</beans>

@@ -16,6 +16,7 @@ import org.springframework.integration.file.FileReadingMessageSource;
 import org.springframework.integration.file.FileWritingMessageHandler;
 import org.springframework.integration.file.filters.SimplePatternFileListFilter;
 import org.springframework.integration.file.transformer.FileToStringTransformer;
+import org.springframework.integration.redis.inbound.RedisInboundChannelAdapter;
 import org.springframework.integration.router.HeaderValueRouter;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -63,6 +64,16 @@ public class IntegrationConfiguration {
 
     @Bean
     public MessageChannel receiptFileChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public MessageChannel redisSendChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public MessageChannel redisReceiveChannel() {
         return new DirectChannel();
     }
 
@@ -142,6 +153,11 @@ public class IntegrationConfiguration {
     @ServiceActivator(inputChannel = "fileProcessChannel")
     public void secondProcessMessage(String message, @Header("id") String headId) {
         logger.info("secondProcessMessage=" + headId);
+    }
+
+    @ServiceActivator(inputChannel = "redisReceiveChannel")
+    public void subscribeMessage(String message) {
+        logger.error("subscribeMessage = " + message);
     }
 
     @Bean

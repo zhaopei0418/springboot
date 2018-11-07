@@ -10,7 +10,7 @@ spring:
     initialSize: 5
     minIdle: 5
     maxActive: 20
-    filters: stat,wall,log4j
+    filters: stat,wall
   datasource.second:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/public_declaration?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
@@ -19,13 +19,17 @@ spring:
     initialSize: 5
     minIdle: 5
     maxActive: 20
-    filters: stat,wall,log4j
+    filters: stat,wall
   rabbitmq:
     host: www.haeport.com
     virtualHost: ase
     port: 5672
     username: username
     password: password
+  redis:
+    host: localhost
+    port: 6379
+
 
 logging:
   file: springboot.log
